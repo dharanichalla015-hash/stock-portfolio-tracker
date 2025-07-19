@@ -1,0 +1,48 @@
+# Step 1: Define fixed stock prices
+stock_prices = {
+    "AAPL": 180,
+    "TSLA": 250,
+    "GOOGL": 150,
+    "MSFT": 280,
+    "AMZN": 140
+}
+
+# Step 2: Get user input
+portfolio = {}
+while True:
+    stock = input("Enter stock symbol (or type 'done' to finish): ").upper()
+    if stock == 'DONE':
+        break
+    if stock not in stock_prices:
+        print("Stock not in our database. Try again.")
+        continue
+    quantity = input(f"Enter quantity of {stock}: ")
+    if not quantity.isdigit():
+        print("Please enter a valid number.")
+        continue
+    portfolio[stock] = portfolio.get(stock, 0) + int(quantity)
+
+# Step 3: Calculate total investment
+total_value = 0
+print("\nYour Stock Portfolio Summary:")
+print("-------------------------------")
+for stock, quantity in portfolio.items():
+    price = stock_prices[stock]
+    investment = price * quantity
+    print(f"{stock}: {quantity} shares × ${price} = ${investment}")
+    total_value += investment
+
+print(f"\nTotal Investment Value: ${total_value}")
+
+# Step 4 (Optional): Save to file
+save_option = input("\nDo you want to save the result to a file? (yes/no): ").lower()
+if save_option == "yes":
+    with open("portfolio_summary.txt", "w") as file:
+        file.write("Your Stock Portfolio Summary:\n")
+        file.write("-------------------------------\n")
+        for stock, quantity in portfolio.items():
+            price = stock_prices[stock]
+            investment = price * quantity
+            file.write(f"{stock}: {quantity} shares × ${price} = ${investment}\n")
+        file.write(f"\nTotal Investment Value: ${total_value}\n")
+    print("Portfolio summary saved to 'portfolio_summary.txt'")
